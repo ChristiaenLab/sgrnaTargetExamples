@@ -5,8 +5,15 @@ SNPS = http://ghost.zool.kyoto-u.ac.jp/cgi-bin/gb2/gbrowse/kh/?l=SNPS;f=save+dat
 GENOME = KH.KHGene.2013.gff3
 VERSION = 1.12
 
-install: build
-	java -Xmx4g -jar FlashFry/FlashFry-assembly-$(VERSION).jar \
+SNPS.gff3: $(GENOME)
+	wget -U firefox $(SNPS)
+
+$(GENOME): kh2013_db
+	wget -U firefox http://ghost.zool.kyoto-u.ac.jp/datas/$(GENOME).zip
+	unzip $(GENOME).zip
+
+kh2013_db: build
+	java -Xmx4g -jar FlashFry-assembly-$(VERSION).jar \
 	 index \
 	 --tmpLocation ./build \
 	 --database $(DB) \
@@ -16,15 +23,8 @@ install: build
 build: FlashFry-assembly-$(VERSION).jar
 	mkdir -p build
 
-FlashFry-assembly-$(VERSION).jar:
+FlashFry-assembly-$(VERSION).jar: $(FASTA)
 	wget https://github.com/mckennalab/FlashFry/releases/download/$(VERSION)/FlashFry-assembly-$(VERSION).jar
-
-$(GENOME):
-	wget -U firefox http://ghost.zool.kyoto-u.ac.jp/datas/$(GENOME).zip
-	unzip $(GENOME).zip
-
-SNPS.gff3:
-	wget -U firefox $(SNPS)
 
 $(FASTA):
 	wget -U firefox $(URL)

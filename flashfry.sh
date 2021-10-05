@@ -14,7 +14,7 @@ java -Xmx4g -jar FlashFry-assembly-1.12.jar \
  --scoringMetrics doench2014ontarget,doench2016cfd,dangerous,hsu2013,minot \
  --database kh2013_db \
 
-bedtools getfasta -name -fi JoinedScaffold.fasta -fo targetSites.fasta -bed targetSites.bed -s
+bedtools getfasta -name -fi JoinedScaffold -fo targets.fasta -bed targets.bed -s
 
 #get targets
 java -Xmx4g -jar FlashFry-assembly-1.12.jar \
